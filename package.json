@@ -1,0 +1,27 @@
+{
+  "name": "@venture-api/mold",
+  "version": "0.1.0",
+  "description": "Venture API writer service",
+  "main": "main.js",
+  "scripts": {
+    "test": "mocha",
+    "start": "node main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/venture-api/mold.git"
+  },
+  "keywords": [
+    "microservice",
+    "cqrs"
+  ],
+  "author": "Max Korinets",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/venture-api/mold/issues"
+  },
+  "homepage": "https://github.com/venture-api/mold#readme",
+  "dependencies": {
+    "@venture-api/plant": "^3.0.3"
+  }
+}
