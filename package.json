@@ -1,7 +1,7 @@
 {
   "name": "@venture-api/mold",
   "version": "0.1.0",
-  "description": "Venture API writer service",
+  "description": "Venture API command processing service",
   "main": "main.js",
   "scripts": {
     "test": "mocha",
@@ -22,6 +22,10 @@
   },
   "homepage": "https://github.com/venture-api/mold#readme",
   "dependencies": {
-    "@venture-api/plant": "^3.0.3"
+    "kojo": "^3.2.1",
+    "mongodb": "^3.0.5",
+    "stair": "^0.2.2",
+    "tasu": "^4.0.2",
+    "yt-config": "^2.0.2"
   }
 }
