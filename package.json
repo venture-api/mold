@@ -1,11 +1,13 @@
 {
   "name": "@venture-api/mold",
   "version": "0.1.0",
-  "description": "Venture API command processing service",
+  "description": "🔥 Venture API command processing service",
   "main": "main.js",
   "scripts": {
-    "test": "mocha",
-    "start": "node main.js"
+    "test": "export NODE_ENV=test && mocha test",
+    "start": "node main.js",
+    "nats": "export GOPATH=$HOME/go && export PATH=$PATH:$GOPATH/bin && gnatsd -DV",
+    "stan": "export GOPATH=$HOME/go && export PATH=$PATH:$GOPATH/bin && nats-streaming-server -p 4223 -DV"
   },
   "repository": {
     "type": "git",
@@ -15,16 +17,24 @@
     "microservice",
     "cqrs"
   ],
-  "author": "Max Korinets",
+  "private": true,
+  "author": "Maksim Korinets",
   "license": "UNLICENSED",
   "bugs": {
     "url": "https://github.com/venture-api/mold/issues"
   },
+  "engines": {
+    "node": "lts"
+  },
   "homepage": "https://github.com/venture-api/mold#readme",
   "dependencies": {
-    "kojo": "^3.2.1",
+    "chai": "^4.1.2",
+    "coveralls": "^3.0.0",
+    "kojo": "^3.2.2",
+    "mocha": "^5.0.5",
     "mongodb": "^3.0.5",
-    "stair": "^0.2.2",
+    "nyc": "^11.6.0",
+    "stair": "^0.3.1",
     "tasu": "^4.0.2",
     "yt-config": "^2.0.2"
   }
