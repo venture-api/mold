@@ -29,24 +29,18 @@ describe('mold', () => {
 
     describe('payer subscribers', () => {
 
-        it('handles player.register', async () => {
+        it('handles player.register', (done) => {
 
             const {id, email, name} = playerOne;
-            let notified = false;
 
             tasu.subOnce(`${playerOne.id}.player.registered`, (player) => {
                 assert.equal(player.email, email);
                 assert.equal(player.name, name);
                 assert.equal(player.id, id);
                 assert.isOk(player._id);
-                notified = true;
+                done();
             });
-            await stair.write('player.register', {id, email, name});
-            const player = await tasu.request('player.identify', {email});
-            assert.equal(player.email, email);
-            assert.equal(player.name, name);
-            assert.equal(player.id, id);
-            assert.isTrue(notified);
+            stair.write('player.register', {id, email, name});
         })
 
 
