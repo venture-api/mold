@@ -6,6 +6,6 @@ module.exports = (kojo) => {
 
     stair.read('player.register', async (payload) => {
         const newPlayer = await player.register(payload);
-        await tasu.publish(`${id}.player.registered`, newPlayer);
+        await tasu.publish(`${payload.id}.player.registered`, newPlayer);
     });
 };
