@@ -22,11 +22,6 @@ module.exports = async () => {
     const client = await MongoClient.connect(config.mongodb.url);
     kojo.set('mongo', client);
 
-    // drop all databases
-    await Promise.all(Object.entries(config.databases).map(([k, name]) => {
-        return client.db(name).dropDatabase();
-    }));
-
 
     // tasu
 

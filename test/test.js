@@ -25,9 +25,9 @@ describe('mold', () => {
         console.log('> stopping test mold');
         tasu.close();
         stair.close();
-        await mongo.db(config.databases.players).dropDatabase();
-        await mongo.db(config.databases.acl).dropDatabase();
-        await mongo.db(config.databases.factories).dropDatabase();
+        await Promise.all(Object.entries(config.databases).map(([k, name]) => {
+            return mongo.db(name).dropDatabase();
+        }));
         mongo.close();
     });
 
