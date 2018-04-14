@@ -32,6 +32,7 @@ describe('mold', () => {
         it('handles player.register', (done) => {
 
             const {id, email, name} = playerOne;
+            stair.write('player.register', {id, email, name});
 
             tasu.subOnce(`${playerOne.id}.player.registered`, (player) => {
                 assert.equal(player.email, email);
@@ -40,7 +41,6 @@ describe('mold', () => {
                 assert.isOk(player._id);
                 done();
             });
-            stair.write('player.register', {id, email, name});
         })
 
 
