@@ -7,6 +7,7 @@ let stair;
 let tasu;
 let mongo;
 let mold;
+let config;
 
 describe('mold', () => {
 
@@ -15,16 +16,19 @@ describe('mold', () => {
         const mold = await Mold();
         stair = mold.get('stair');
         tasu = mold.get('tasu');
-        mongo = mold.get('mongo')
+        mongo = mold.get('mongo');
+        config = mold.get('config');
 
     });
 
-    after(function (done) {
+    after(async () => {
         console.log('> stopping test mold');
         tasu.close();
         stair.close();
+        await mongo.db(config.databases.players).dropDatabase();
+        await mongo.db(config.databases.acl).dropDatabase();
+        await mongo.db(config.databases.factories).dropDatabase();
         mongo.close();
-        done();
     });
 
     describe('payer subscribers', () => {

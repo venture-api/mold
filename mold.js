@@ -23,7 +23,7 @@ module.exports = async () => {
     kojo.set('mongo', client);
 
     // drop all databases
-    await Promise.all(config.databases.map((name) => {
+    await Promise.all(Object.entries(config.databases).map(([k, name]) => {
         return client.db(name).dropDatabase();
     }));
 
