@@ -7,6 +7,7 @@ let stair;
 let tasu;
 let mongo;
 let mold;
+let config;
 
 describe('mold', () => {
 
@@ -15,16 +16,19 @@ describe('mold', () => {
         const mold = await Mold();
         stair = mold.get('stair');
         tasu = mold.get('tasu');
-        mongo = mold.get('mongo')
+        mongo = mold.get('mongo');
+        config = mold.get('config');
 
     });
 
-    after(function (done) {
+    after(async () => {
         console.log('> stopping test mold');
         tasu.close();
         stair.close();
+        await Promise.all(Object.entries(config.databases).map(([k, name]) => {
+            return mongo.db(name).dropDatabase();
+        }));
         mongo.close();
-        done();
     });
 
     describe('payer subscribers', () => {
@@ -32,6 +36,7 @@ describe('mold', () => {
         it('handles player.register', (done) => {
 
             const {id, email, name} = playerOne;
+            stair.write('player.register', {id, email, name});
 
             tasu.subOnce(`${playerOne.id}.player.registered`, (player) => {
                 assert.equal(player.email, email);
@@ -40,7 +45,6 @@ describe('mold', () => {
                 assert.isOk(player._id);
                 done();
             });
-            stair.write('player.register', {id, email, name});
         })
 
 
