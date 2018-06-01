@@ -10,32 +10,32 @@ module.exports = async () => {
 
     const config = await configLoader('config.ini');
 
-
     // kojo
+    const kojo = new Kojo(config.kojo);
 
-    const kojo = new Kojo('mold', config.kojo, pack);
+    //config
     kojo.set('config', config);
 
-
     // mongo
-
     const client = await MongoClient.connect(config.mongodb.url);
     kojo.set('mongo', client);
 
+    const playerIndex = client.db(config.databases.players).collection('index');
+    playerIndex.createIndex({"email": 1}, {unique: true});
+    const regionIndex = client.db(config.databases.regions).collection('index');
+    regionIndex.createIndex({"name": 1}, {unique: true});
 
     // tasu
-
     const tasu = new Tasu(config.tasu);
     await tasu.connected();
     kojo.set('tasu', tasu);
 
-
     // stair
-
     const stair = new Stair(config.stair);
     await stair.connected();
     kojo.set('stair', stair);
 
     await kojo.ready();
+
     return kojo;
 };

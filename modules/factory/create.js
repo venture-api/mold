@@ -1,10 +1,9 @@
 module.exports = async function (factoryData) {
 
-    const {kojo, logger} = this;
-    const mongo = kojo.get('mongo');
-    const {databases} = kojo.get('config');
-    const index = mongo.db(databases.factories).collection('index');
-    const {result} = await index.insertOne(factoryData);
-    logger.info(result);
-    return factoryData;
+    const {kojo} = this;
+    const {mongo, config} = kojo.get();
+    const {databases: {factories}} = config;
+    const index = mongo.db(factories).collection('index');
+    const {ops: [newFactory]} = await index.insertOne(factoryData);
+    return newFactory;
 };
