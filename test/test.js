@@ -1,7 +1,6 @@
 const {assert} = require('chai');
-const {spawn, exec} = require('child_process');
-const Mold = require('../mold');
-const {playerOne, factoryOne, initial} = require('./fixtures');
+const {spawn} = require('child_process');
+const {playerOne, factoryOne, grasswall} = require('./fixtures');
 
 
 let stair;
@@ -9,36 +8,33 @@ let tasu;
 let mongo;
 let mold;
 let config;
+let nats;
 let stan;
 
 describe('mold', () => {
 
     before(async function ()  {
         stan = spawn('export GOPATH=$HOME/go && export PATH=$PATH:$GOPATH/bin && nats-streaming-server', ['-p', '4223', '-DV'], {shell: '/bin/bash'});
-        stan.stdout.on('data', (data) => {
-            console.log(`stan stdout:\n${data}`);
-        });
-        stan.stderr.on('data', (data) => {
-            console.error(`stan stderr:\n${data}`);
-        });
-        stan.on('error', function( err ){ throw err });
-        mold = await Mold();
+        nats = spawn('export GOPATH=$HOME/go && export PATH=$PATH:$GOPATH/bin && gnatsd', ['-p', '4222', '-DV'], {shell: '/bin/bash'});
+        const Mold = require('../mold');
+        mold = await Mold([['region.create', grasswall]]);
         stair = mold.get('stair');
         tasu = mold.get('tasu');
         mongo = mold.get('mongo');
         config = mold.get('config');
-
     });
 
     after(async () => {
         console.log('> stopping test mold');
         tasu.close();
         stair.close();
-        // await Promise.all(Object.entries(config.databases).map(([k, name]) => {
-        //     return mongo.db(name).dropDatabase();
-        // }));
+        await Promise.all(Object.entries(config.databases).map(([k, name]) => {
+            return mongo.db(name).dropDatabase();
+        }));
         mongo.close();
+        console.log('> killing transports');
         stan.kill('SIGINT');
+        nats.kill('SIGINT');
     });
 
     describe('initial module', () => {
@@ -46,8 +42,8 @@ describe('mold', () => {
         describe('feed', () => {
 
             it('feeds initial commands', async () => {
-                const index = mongo.db(config.databases.regions).collection('index');
-                const grasswall = await index.findOne({name: 'grasswall'});
+                const regions = mongo.db(config.databases.regions).collection('index');
+                const grasswall = await regions.findOne({name: 'grasswall'});
                 assert.equal(grasswall.name, 'grasswall');
                 assert.equal(grasswall.defects.length, 1);
                 assert.equal(grasswall.resourceTypes.length, 2);

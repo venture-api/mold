@@ -6,7 +6,7 @@ const configLoader = require('yt-config');
 const pack = require('./package.json');
 
 
-module.exports = async () => {
+module.exports = async (initialItems=[]) => {
 
     const config = await configLoader('config.ini');
 
@@ -36,6 +36,9 @@ module.exports = async () => {
     kojo.set('stair', stair);
 
     await kojo.ready();
+
+    // load initial items
+    await kojo.modules.initial.feed(initialItems);
 
     return kojo;
 };
