@@ -1,6 +1,6 @@
 const {assert} = require('chai');
 const {spawn} = require('child_process');
-const {playerOne, factoryOne, grasswall} = require('./fixtures');
+const {players: {bonner}, factories: {rdrn}, regions: {grasswall}} = require('@venture-api/fixtures');
 
 
 let stair;
@@ -55,7 +55,7 @@ describe('mold', () => {
 
         it('handles player.register', (done) => {
 
-            const {id, email, name} = playerOne;
+            const {id, email, name} = bonner;
             stair.write('player.register', {id, email, name});
             tasu.subOnce(`${id}.player.registered`, async () => {
                 const index = mongo.db(config.databases.players).collection('index');
@@ -70,9 +70,9 @@ describe('mold', () => {
 
         it('handles factory.create', (done) => {
 
-            const {id, name, region} = factoryOne;
-            stair.write('factory.create', factoryOne);
-            tasu.subOnce(`${factoryOne.ownerId}.factory.created`, async () => {
+            const {id, name, region} = rdrn;
+            stair.write('factory.create', rdrn);
+            tasu.subOnce(`${rdrn.ownerId}.factory.created`, async () => {
                 const index = mongo.db(config.databases.factories).collection('index');
                 const newFactory = await index.findOne({id});
                 assert.equal(newFactory.name, name);
