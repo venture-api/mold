@@ -14,8 +14,8 @@ let stan;
 describe('mold', () => {
 
     before(async function ()  {
-        stan = spawn('export GOPATH=$HOME/go && export PATH=$PATH:$GOPATH/bin && nats-streaming-server', ['-p', '4223', '-DV'], {shell: '/bin/bash'});
-        nats = spawn('export GOPATH=$HOME/go && export PATH=$PATH:$GOPATH/bin && gnatsd', ['-p', '4222', '-DV'], {shell: '/bin/bash'});
+        // stan = spawn('export GOPATH=$HOME/go && export PATH=$PATH:$GOPATH/bin && nats-streaming-server', ['-p', '4223', '-DV'], {shell: '/bin/bash'});
+        // nats = spawn('export GOPATH=$HOME/go && export PATH=$PATH:$GOPATH/bin && gnatsd', ['-p', '4222', '-DV'], {shell: '/bin/bash'});
         const Mold = require('../mold');
         mold = await Mold([['region.create', grasswall]]);
         stair = mold.get('stair');
