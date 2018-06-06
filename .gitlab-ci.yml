@@ -1,4 +1,7 @@
-image: node:10
+image: node:latest
+
+variables:
+  NODE_ENV: ci
 
 services:
   - mongo:latest
@@ -6,10 +9,6 @@ services:
 
 before_script:
   - npm ci
-
-cache:
-  paths:
-    - node_modules/
 
 test:
  script:
