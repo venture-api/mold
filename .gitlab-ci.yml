@@ -6,6 +6,7 @@ variables:
 services:
   - mongo:latest
   - nats:latest
+  - nats-streaming:latest
 
 before_script:
   - npm ci
