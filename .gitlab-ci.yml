@@ -3,7 +3,7 @@ image: xenial
 services:
   - mongo:latest
   - nats:latest
-  - node:lts
+  - node:latest
 
 test:
  script:
