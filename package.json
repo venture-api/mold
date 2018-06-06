@@ -30,7 +30,6 @@
   "dependencies": {
     "@venture-api/fixtures": "^0.2.2",
     "chai": "^4.1.2",
-    "coveralls": "^3.0.1",
     "kojo": "^4.1.0",
     "mocha": "^5.2.0",
     "mongodb": "^3.0.8",
