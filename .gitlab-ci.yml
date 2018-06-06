@@ -1,4 +1,4 @@
-image: xenial
+image: ubuntu:xenial
 
 services:
   - mongo:latest
