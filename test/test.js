@@ -32,9 +32,9 @@ describe('mold', () => {
             return mongo.db(name).dropDatabase();
         }));
         mongo.close();
-        console.log('> killing transports');
-        stan.kill('SIGINT');
-        nats.kill('SIGINT');
+        // console.log('> killing transports');
+        // stan.kill('SIGINT');
+        // nats.kill('SIGINT');
     });
 
     describe('initial module', () => {
