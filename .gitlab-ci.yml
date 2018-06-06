@@ -1,7 +1,7 @@
 image: xenial
 
 services:
-  - mongodb:latest
+  - mongo:latest
   - nats:latest
   - node:lts
 
