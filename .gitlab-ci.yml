@@ -1,9 +1,8 @@
-image: ubuntu:xenial
+image: node:10
 
 services:
   - mongo:latest
   - nats:latest
-  - node:10
 
 before_script:
   - npm ci
