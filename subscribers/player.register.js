@@ -1,9 +1,7 @@
 module.exports = async (kojo, logger) => {
 
-    const stair = kojo.get('stair');
-    const tasu = kojo.get('tasu');
-    const player = kojo.module('player');
-    const acl = kojo.module('acl');
+    const {stair, tasu} = kojo.get();
+    const {player, acl} = kojo.modules;
 
     await stair.read('player.register', async (payload) => {
         logger.debug(payload);
@@ -14,7 +12,7 @@ module.exports = async (kojo, logger) => {
         // create acl record
         await acl.create('player', newPlayer);
 
-        logger.debug('player registered, sending event');
-        await tasu.publish(`${payload.id}.player.registered`, newPlayer);
+        logger.info('registered:', newPlayer);
+        tasu.publish(`${newPlayer.id}.player.registered`, newPlayer);
     });
 };
