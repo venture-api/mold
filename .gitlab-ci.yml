@@ -13,7 +13,7 @@ before_script:
 
 test:
   script:
-    - nyc --reporter=html npm test
+    - node_modules/.bin/nyc npm test && node_modules/.bin/nyc report --reporter=html
   artifacts:
     paths:
       - coverage/
