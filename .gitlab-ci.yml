@@ -1,4 +1,4 @@
-image: node:latest
+image: node:8
 
 variables:
   NODE_ENV: ci
@@ -9,7 +9,7 @@ services:
   - nats-streaming:latest
 
 before_script:
-  - npm ci
+  - npm i
 
 test:
   script:
