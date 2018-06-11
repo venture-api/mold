@@ -1,4 +1,4 @@
-image: node:latest
+image: node:lts
 
 variables:
   NODE_ENV: ci
@@ -9,8 +9,22 @@ services:
   - nats-streaming:latest
 
 before_script:
-  - npm ci
+  - npm i
 
 test:
- script:
-   - node_modules/.bin/nyc npm test && node_modules/.bin/nyc report --reporter=text-lcov
+  script:
+    - node_modules/.bin/nyc npm test && node_modules/.bin/nyc report --reporter=text-lcov
+  artifacts:
+    paths:
+      - .nyc_output/
+
+pages:
+  stage: deploy
+  dependencies:
+    - test
+  script:
+    - mv .nyc_output/ public/
+  artifacts:
+    paths:
+      - public
+    expire_in: 30 days

@@ -1,7 +1,7 @@
 {
   "name": "@venture-api/mold",
   "version": "0.1.0",
-  "description": "🔥 Venture API command processing service",
+  "description": "Venture API command processing service",
   "main": "main.js",
   "scripts": {
     "test": "mocha test",
