@@ -2,3 +2,4 @@
 node_modules/
 flightplan.js
 .nyc_output/
+coverage/
