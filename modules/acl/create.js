@@ -9,8 +9,7 @@ module.exports = async function (principalType, {id, ownerId}) {
     const {kojo, logger} = this;
     logger.debug(principalType, id, ownerId);
     const mongo = kojo.get('mongo');
-    const {databases} = kojo.get('config');
-    const index = mongo.db(databases.acl).collection('index');
+    const index = mongo.db('acl').collection('index');
     let mongoRes;
 
     switch (principalType) {
@@ -33,7 +32,6 @@ module.exports = async function (principalType, {id, ownerId}) {
             ]);
             break;
     }
-
 
     logger.info(mongoRes.result);
 };

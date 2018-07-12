@@ -1,6 +1,7 @@
 [0.2.0]
 -------
-- [ ] Add `produce` subs
+- [x] Add `produce` subs
+- [ ] Add facility cooldown
 
 
 [0.1.0] - 2018-06-11

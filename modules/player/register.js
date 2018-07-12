@@ -1,9 +1,11 @@
+const {player} = require('@venture-api/fixtures/constants/player');
+
+
 module.exports = async function (playerData) {
 
     const {kojo, logger} = this;
-    const {mongo, config} = kojo.get();
-    const {databases: {players}} = config;
-    const index = mongo.db(players).collection('index');
+    const {mongo} = kojo.get();
+    const index = mongo.db(player).collection('index');
     try {
         const {ops: [newPlayer]} = await index.insertOne(playerData);
         return newPlayer;

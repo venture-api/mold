@@ -1,5 +1,4 @@
 const {assert} = require('chai');
-const {spawn} = require('child_process');
 const {bonner} = require('@venture-api/fixtures/fixtures/player');
 const {rdrn} = require('@venture-api/fixtures/fixtures/facility');
 const {grasswall} = require('@venture-api/fixtures/fixtures/region');
