@@ -3,7 +3,6 @@ const Stair = require('stair');
 const Tasu = require('tasu');
 const {MongoClient} = require('mongodb');
 const configLoader = require('yt-config');
-const pack = require('./package.json');
 
 
 module.exports = async (initialItems=[]) => {
@@ -17,7 +16,7 @@ module.exports = async (initialItems=[]) => {
     kojo.set('config', config);
 
     // mongo
-    const client = await MongoClient.connect(config.mongodb.url);
+    const client = await MongoClient.connect(config.mongodb.url, {useNewUrlParser: true});
     kojo.set('mongo', client);
 
     const playerIndex = client.db(config.databases.players).collection('index');

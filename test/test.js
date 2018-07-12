@@ -1,6 +1,8 @@
 const {assert} = require('chai');
 const {spawn} = require('child_process');
-const {players: {bonner}, factories: {rdrn}, regions: {grasswall}} = require('@venture-api/fixtures');
+const {bonner} = require('@venture-api/fixtures/fixtures/player');
+const {rdrn} = require('@venture-api/fixtures/fixtures/facility');
+const {grasswall} = require('@venture-api/fixtures/fixtures/region');
 
 
 let stair;
@@ -8,14 +10,10 @@ let tasu;
 let mongo;
 let mold;
 let config;
-let nats;
-let stan;
 
 describe('mold', () => {
 
     before(async function ()  {
-        // stan = spawn('export GOPATH=$HOME/go && export PATH=$PATH:$GOPATH/bin && nats-streaming-server', ['-p', '4223', '-DV'], {shell: '/bin/bash'});
-        // nats = spawn('export GOPATH=$HOME/go && export PATH=$PATH:$GOPATH/bin && gnatsd', ['-p', '4222', '-DV'], {shell: '/bin/bash'});
         const Mold = require('../mold');
         mold = await Mold([['region.create', grasswall]]);
         stair = mold.get('stair');
