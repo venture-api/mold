@@ -7,12 +7,12 @@ module.exports = async (kojo, logger) => {
         logger.debug(payload);
 
         // create player record
-        const newPlayer = await player.register(payload);
+        const newPlayer = await player.addToIndex(payload);
 
         // create acl record
         await acl.create('player', newPlayer);
 
         logger.info('registered:', newPlayer);
-        tasu.publish(`${newPlayer.id}.player.registered`, newPlayer);
+        tasu.publish(`${newPlayer.id}.playerRegistered`, newPlayer);
     });
 };

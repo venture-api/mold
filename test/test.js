@@ -2,6 +2,7 @@ const {assert} = require('chai');
 const {bonner} = require('@venture-api/fixtures/fixtures/player');
 const {rdrn} = require('@venture-api/fixtures/fixtures/facility');
 const {grasswall} = require('@venture-api/fixtures/fixtures/region');
+const {region, player, facility} = require('@venture-api/fixtures/dictionary');
 
 
 let stair;
@@ -14,7 +15,7 @@ describe('mold', () => {
 
     before(async function ()  {
         const Mold = require('../mold');
-        mold = await Mold([['region.create', grasswall]]);
+        mold = await Mold([['createRegion', grasswall]]);
         stair = mold.get('stair');
         tasu = mold.get('tasu');
         mongo = mold.get('mongo');
@@ -25,13 +26,11 @@ describe('mold', () => {
         console.log('> stopping test mold');
         tasu.close();
         stair.close();
-        await Promise.all(Object.entries(config.databases).map(([k, name]) => {
+        await Promise.all(['acl', region, player, facility].map((name) => {
+            console.log('> dropping db', name);
             return mongo.db(name).dropDatabase();
         }));
         mongo.close();
-        // console.log('> killing transports');
-        // stan.kill('SIGINT');
-        // nats.kill('SIGINT');
     });
 
     describe('initial module', () => {
@@ -39,7 +38,7 @@ describe('mold', () => {
         describe('feed', () => {
 
             it('feeds initial commands', async () => {
-                const regions = mongo.db(config.databases.regions).collection('index');
+                const regions = mongo.db(region).collection('index');
                 const grasswall = await regions.findOne({name: 'grasswall'});
                 assert.equal(grasswall.name, 'grasswall');
                 assert.equal(grasswall.defects.length, 1);
@@ -50,12 +49,12 @@ describe('mold', () => {
 
     describe('player subscribers', () => {
 
-        it('handles player.register', (done) => {
+        it('handles registerPlayer', (done) => {
 
             const {id, email, name} = bonner;
-            stair.write('player.register', {id, email, name});
-            tasu.subOnce(`${id}.player.registered`, async () => {
-                const index = mongo.db(config.databases.players).collection('index');
+            stair.write('registerPlayer', {id, email, name});
+            tasu.subOnce(`${id}.playerRegistered`, async () => {
+                const index = mongo.db(player).collection('index');
                 const newPlayer = await index.findOne({id});
                 assert.equal(newPlayer.email, email);
                 done();
@@ -63,14 +62,14 @@ describe('mold', () => {
         })
     });
 
-    describe('factory subscribers', () => {
+    describe('facility subscribers', () => {
 
-        it('handles factory.create', (done) => {
+        it('handles createFacility', (done) => {
 
             const {id, name, region} = rdrn;
-            stair.write('factory.create', rdrn);
-            tasu.subOnce(`${rdrn.ownerId}.factory.created`, async () => {
-                const index = mongo.db(config.databases.factories).collection('index');
+            stair.write('createFacility', rdrn);
+            tasu.subOnce(`${rdrn.ownerId}.facilityCreated`, async () => {
+                const index = mongo.db(facility).collection('index');
                 const newFactory = await index.findOne({id});
                 assert.equal(newFactory.name, name);
                 assert.equal(newFactory.region, region);

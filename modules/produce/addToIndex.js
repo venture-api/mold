@@ -1,4 +1,4 @@
-const {resource} = require('@venture-api/fixtures/constants/resource');
+const {resource} = require('@venture-api/fixtures/dictionary');
 
 
 module.exports = async function (payload) {
