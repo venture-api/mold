@@ -1,8 +1,9 @@
 const {assert} = require('chai');
 const {bonner} = require('@venture-api/fixtures/fixtures/player');
 const {rdrn} = require('@venture-api/fixtures/fixtures/facility');
+const {ironOne} = require('@venture-api/fixtures/fixtures/resource');
 const {grasswall} = require('@venture-api/fixtures/fixtures/region');
-const {region, player, facility} = require('@venture-api/fixtures/dictionary');
+const {region, player, facility, resource} = require('@venture-api/fixtures/dictionary');
 
 
 let stair;
@@ -26,7 +27,7 @@ describe('mold', () => {
         console.log('> stopping test mold');
         tasu.close();
         stair.close();
-        await Promise.all(['acl', region, player, facility].map((name) => {
+        await Promise.all(['acl', region, player, facility, resource].map((name) => {
             console.log('> dropping db', name);
             return mongo.db(name).dropDatabase();
         }));
@@ -73,6 +74,22 @@ describe('mold', () => {
                 const newFactory = await index.findOne({id});
                 assert.equal(newFactory.name, name);
                 assert.equal(newFactory.region, region);
+                done();
+            });
+
+        })
+
+    });
+
+    describe('produce subscriber', () => {
+
+        it('handles production normally', (done) => {
+
+            stair.write('produce', ironOne);
+            tasu.subOnce(`${rdrn.ownerId}.resourceProduced`, async (payload) => {
+                const newResource = await mongo.db(resource).collection('index').findOne({id: payload.id});
+                assert.equal(newResource.id, ironOne.id);
+                assert.equal(newResource.location, rdrn.id);
                 done();
             });
 
