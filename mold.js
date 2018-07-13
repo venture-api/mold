@@ -1,8 +1,11 @@
+const {promisify} = require('util');
+const redis = require('redis');
+const {MongoClient} = require('mongodb');
 const Kojo = require('kojo');
 const Stair = require('stair');
 const Tasu = require('tasu');
-const {MongoClient} = require('mongodb');
 const configLoader = require('yt-config');
+const {player, region, resource} = require('@venture-api/fixtures/dictionary');
 
 
 module.exports = async (initialItems=[]) => {
@@ -16,13 +19,16 @@ module.exports = async (initialItems=[]) => {
     kojo.set('config', config);
 
     // mongo
-    const client = await MongoClient.connect(config.mongodb.url, {useNewUrlParser: true});
-    kojo.set('mongo', client);
+    const mongo = await MongoClient.connect(config.mongodb.url, {useNewUrlParser: true});
+    mongo.db(player).collection('index').createIndex({"email": 1}, {unique: true});
+    mongo.db(region).collection('index').createIndex({"name": 1}, {unique: true});
+    mongo.db(resource).collection('index').createIndex({"id": 1}, {unique: true});
+    kojo.set('mongo', mongo);
 
-    const playerIndex = client.db(config.databases.players).collection('index');
-    playerIndex.createIndex({"email": 1}, {unique: true});
-    const regionIndex = client.db(config.databases.regions).collection('index');
-    regionIndex.createIndex({"name": 1}, {unique: true});
+    // redis
+    const client = redis.createClient();
+    const redisSet = promisify(client.set).bind(client);
+    kojo.set('redisSet', redisSet);
 
     // tasu
     const tasu = new Tasu(config.tasu);
