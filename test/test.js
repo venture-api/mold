@@ -9,6 +9,7 @@ const {region, player, facility, resource} = require('@venture-api/fixtures/dict
 let stair;
 let tasu;
 let mongo;
+let redis;
 let mold;
 let config;
 
@@ -21,6 +22,7 @@ describe('mold', () => {
         tasu = mold.get('tasu');
         mongo = mold.get('mongo');
         config = mold.get('config');
+        redis = mold.get('redis');
     });
 
     after(async () => {
@@ -32,6 +34,7 @@ describe('mold', () => {
             return mongo.db(name).dropDatabase();
         }));
         mongo.close();
+        redis.quit();
     });
 
     describe('initial module', () => {
