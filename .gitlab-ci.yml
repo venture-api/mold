@@ -5,6 +5,7 @@ variables:
 
 services:
   - mongo:latest
+  - redis:latest
   - nats:latest
   - nats-streaming:latest
 
