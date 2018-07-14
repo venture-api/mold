@@ -15,7 +15,7 @@ let config;
 describe('mold', () => {
 
     before(async function ()  {
-        const Mold = require('../mold');
+        const Mold = require('../bootstrap');
         mold = await Mold([['createRegion', grasswall]]);
         stair = mold.get('stair');
         tasu = mold.get('tasu');
