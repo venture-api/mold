@@ -26,7 +26,7 @@ module.exports = async (initialItems=[]) => {
     kojo.set('mongo', mongo);
 
     // redis
-    const client = redis.createClient();
+    const client = redis.createClient(config.redis);
     const redisSet = promisify(client.set).bind(client);
     kojo.set('redisSet', redisSet);
 
