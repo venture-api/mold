@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/venture-api/mold#readme",
   "dependencies": {
-    "@venture-api/fixtures": "^4.1.0",
+    "@venture-api/fixtures": "^5.0.0",
     "chai": "^4.1.2",
     "kojo": "^4.3.1",
     "mocha": "^5.2.0",
