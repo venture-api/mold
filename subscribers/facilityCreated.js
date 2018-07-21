@@ -7,7 +7,7 @@ module.exports = (kojo, logger) => {
     const {facility, acl} = kojo.modules;
 
     facility.on('facilityCreated', async (facilityData) => {
-        logger.debug('creating ACL for', facilityData.id);
+        logger.debug('creating ACL set for:', facilityData.id);
         await acl.initialize({
             principalType: facilityWrd,
             elementId: facilityData.id,
