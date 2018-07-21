@@ -1,3 +1,6 @@
+const {player: playerWrd} = require('@venture-api/fixtures/dictionary');
+
+
 module.exports = async (kojo, logger) => {
 
     const {stair, tasu} = kojo.get();
@@ -7,12 +10,12 @@ module.exports = async (kojo, logger) => {
         logger.debug(payload);
 
         // create player record
-        const newPlayer = await player.addToIndex(payload);
+        const newPlayerData = await player.create(payload);
 
-        // create acl record
-        await acl.create('player', newPlayer);
+        // create ACL record set
+        await acl.initialize({principalType: playerWrd, principalId: newPlayerData.id});
 
-        logger.info('registered:', newPlayer);
-        tasu.publish(`${newPlayer.id}.playerRegistered`, newPlayer);
+        logger.info('registered:', newPlayerData);
+        tasu.publish(`${newPlayerData.id}.playerRegistered`, newPlayerData);
     });
 };

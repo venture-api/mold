@@ -3,7 +3,7 @@ const {bonner} = require('@venture-api/fixtures/fixtures/player');
 const {rdrn} = require('@venture-api/fixtures/fixtures/facility');
 const {ironOne} = require('@venture-api/fixtures/fixtures/resource');
 const {grasswall} = require('@venture-api/fixtures/fixtures/region');
-const {region, player, facility, resource} = require('@venture-api/fixtures/dictionary');
+const {region, player, facility, resource, read, self, update} = require('@venture-api/fixtures/dictionary');
 
 
 let stair;
@@ -61,6 +61,14 @@ describe('mold', () => {
                 const index = mongo.db(player).collection('index');
                 const newPlayer = await index.findOne({id});
                 assert.equal(newPlayer.email, email);
+                const readACEID = `${newPlayer.id}::${read}::${self}`;
+                const readACE = await mongo.db('acl').collection('index')
+                    .findOne({_id: readACEID});
+                assert.equal(readACE._id, readACEID);
+                const updateACEID = `${newPlayer.id}::${update}::${self}`;
+                const updateACE = await mongo.db('acl').collection('index')
+                    .findOne({_id: updateACEID});
+                assert.equal(updateACE._id, updateACEID);
                 done();
             });
         })
